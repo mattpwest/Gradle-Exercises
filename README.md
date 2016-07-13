@@ -176,3 +176,89 @@ dependencies {
 ```
 
 Answer: `git checkout answer2`
+
+
+## Exercise 3: Tests
+
+Exercise: `git checkout exercise3`
+
+Your example project includes some tests (OK - a test). To run it, execute `gradle test` and look at the output:
+```
+:compileJava                                                                     
+:processResources UP-TO-DATE      
+:classes                 
+:compileTestJava                                                         
+:processTestResources UP-TO-DATE      
+:testClasses                 
+:test                                                         
+               
+BUILD SUCCESSFUL
+               
+Total time: 15.148 secs
+```
+
+So our build is succeeding so hopefully tests were run and passed... but it might be nicer to see which tests were run
+so we can verify that they are actually being run. So add the following to `build.gradle`:
+
+```
+test {
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+}
+```
+
+Run `gradle test` again:
+
+```
+:compileJava UP-TO-DATE                                                          
+:processResources UP-TO-DATE      
+:classes UP-TO-DATE      
+:compileTestJava UP-TO-DATE                                              
+:processTestResources UP-TO-DATE      
+:testClasses UP-TO-DATE      
+:test UP-TO-DATE                                              
+               
+BUILD SUCCESSFUL
+               
+Total time: 8.633 secs
+```
+
+Still nothing?! Well actually Gradle is just being clever and not running tests that have already been compiled and run
+a second time. To rerun the tests execute `gradle cleanTest test`:
+
+```
+:cleanTest                                                                       
+:compileJava UP-TO-DATE                                          
+:processResources UP-TO-DATE      
+:classes UP-TO-DATE      
+:compileTestJava UP-TO-DATE                                              
+:processTestResources UP-TO-DATE      
+:testClasses UP-TO-DATE      
+:test                                                         
+                      
+za.co.entelect.forums.java.AppTest > testApp PASSED
+                                         
+BUILD SUCCESSFUL
+               
+Total time: 6.65 secs
+```
+
+This time we can see that our test ran and passed.
+
+The simple test included in your example code is written for a pretty old version of JUnit - make the following changes
+to `AppTest.java` to modernise it:
+ * Remove all import statements.
+ * Remove `extends TestCase` from the class definition.
+ * Remove the constructor.
+ * Remove the static method `suite`.
+ * Replace `assertTrue(true);` with `Assert.assertTrue(true);`.
+ * Annotate the `testApp()` method with `@Test`.
+ * Add `import org.junit.Assert;`.
+ * Add `import org.junit.Test;`.
+  
+Also update your `build.gradle` to use `junit:4.12`.
+
+Now run `gradle test` to make sure your changes are working.  
+
+Answer: `git checkout answer3`
