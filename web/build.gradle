@@ -1,0 +1,20 @@
+apply plugin: 'war'
+apply plugin: 'jetty'
+
+ext {
+    springVersion = '4.1.1.RELEASE'
+}
+
+dependencies {
+    compile project(':domain')
+    compile(group: 'org.springframework', name: 'spring-core', version: springVersion) {
+        exclude module: 'commons-logging'
+    }
+    compile group: 'org.springframework', name: 'spring-webmvc', version: springVersion
+    compile group: 'org.slf4j', name: 'jcl-over-slf4j', version: '1.7.5'
+    compile group: 'ch.qos.logback', name: 'logback-classic', version: '1.0.13'
+    compile group: 'jstl', name: 'jstl', version: '1.2'
+}
+
+jettyRunWar.contextPath = ''
+jettyRun.contextPath = ''
